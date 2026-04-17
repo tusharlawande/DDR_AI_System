@@ -1,0 +1,527 @@
+{
+  "report_title": "Detailed Diagnostic Report (DDR)",
+  "report_id": "DDR-330C7FB1",
+  "property_address": "Property Age (In years):",
+  "inspection_date": "27.09.2022 14:28 IST",
+  "inspected_by": "Krushna & Mahesh",
+  "property_type": "Flat",
+  "property_age": "Not Available",
+  "floors": "11",
+  "ai_model_used": "Advanced Rule-based Engine v2.0 (No API key \u2014 works offline)",
+  "pipeline_version": "2.0.0",
+  "overall_confidence": 0.8614285714285714,
+  "processing_time_seconds": 0.0,
+  "property_issue_summary": "The property inspection of Flat No. 103 (and associated areas) revealed widespread dampness and leakage across all major rooms \u2014 Hall, Bedrooms, Kitchen, Parking, and Common Bathrooms \u2014 primarily driven by systemic failure of bathroom tile grout joints and concealed plumbing. Thermal imaging confirmed active moisture retention across 30 readings, with all readings showing \u0394T ~5\u00b0C signalling persistent moisture. The most critical finding is active slab leakage into the parking ceiling below, requiring immediate structural intervention.",
+  "area_observations": [
+    {
+      "area_name": "Hall \u2014 Flat No. 103",
+      "flat_number": "103",
+      "negative_side_description": "Observed dampness at the skirting level of the Hall of Flat No. 103. The bottom 15\u201320cm of walls shows visible moisture staining and salt efflorescence deposits.",
+      "positive_side_description": "Gaps observed between tile joints of the Common Bathroom of Flat No. 103, allowing water to seep through to the hall walls below.",
+      "severity": "High",
+      "severity_reasoning": "Skirting dampness covering the entire hall perimeter indicates widespread water ingress from the bathroom above. Efflorescence confirms prolonged exposure.",
+      "confidence_score": 0.88,
+      "evidence": [
+        {
+          "source": "inspection",
+          "description": "Observed dampness at the skirting level of the Hall of Flat No. 103. The bottom 15\u201320cm of walls shows visible moisture staining and salt efflorescence deposits.",
+          "confidence": 0.88,
+          "photo_refs": [
+            "Photo 1",
+            "Photo 2",
+            "Photo 3",
+            "Photo 4",
+            "Photo 5",
+            "Photo 6",
+            "Photo 7"
+          ],
+          "thermal_reading_ids": []
+        },
+        {
+          "source": "thermal",
+          "description": "Thermal readings show avg \u0394T=5.01\u00b0C consistent with moisture presence",
+          "confidence": 0.95,
+          "photo_refs": [],
+          "thermal_reading_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "associated_thermal_readings": [],
+      "image_refs": [
+        "Photo 1",
+        "Photo 2",
+        "Photo 3",
+        "Photo 4",
+        "Photo 5",
+        "Photo 6",
+        "Photo 7"
+      ],
+      "root_cause": "Failure of grout in Common Bathroom tile joints allowing water to percolate laterally and vertically into hall skirting walls.",
+      "recommended_actions": [
+        "Re-grout all Common Bathroom tile joints with epoxy-based waterproof grout",
+        "Apply crystalline waterproofing slurry to hall skirting walls (internal surface)",
+        "Inspect and repair Nahani trap for any misalignment or cracks",
+        "Apply anti-dampness paint on hall skirting after drying"
+      ],
+      "chain_of_thought": "Inspection shows skirting dampness \u2192 source identified as bathroom tile gaps \u2192 thermal confirms moisture retention in walls \u2192 HIGH severity due to extent"
+    },
+    {
+      "area_name": "Common Bedroom \u2014 Flat No. 103",
+      "flat_number": "103",
+      "negative_side_description": "Dampness observed at the skirting level of the Common Bedroom of Flat No. 103. Similar pattern to the hall, affecting the shared wall with the Common Bathroom.",
+      "positive_side_description": "Tile joint gaps in Common Bathroom of Flat No. 103 are the common source for both hall and bedroom dampness, indicating widespread grout failure.",
+      "severity": "High",
+      "severity_reasoning": "Same bathroom affecting two rooms confirms large-scale waterproofing failure \u2014 not isolated to one joint.",
+      "confidence_score": 0.85,
+      "evidence": [
+        {
+          "source": "inspection",
+          "description": "Dampness observed at the skirting level of the Common Bedroom of Flat No. 103. Similar pattern to the hall, affecting the shared wall with the Common Bathroom.",
+          "confidence": 0.85,
+          "photo_refs": [
+            "Photo 15",
+            "Photo 16",
+            "Photo 17",
+            "Photo 18",
+            "Photo 19"
+          ],
+          "thermal_reading_ids": []
+        },
+        {
+          "source": "thermal",
+          "description": "Thermal readings show avg \u0394T=5.01\u00b0C consistent with moisture presence",
+          "confidence": 0.95,
+          "photo_refs": [],
+          "thermal_reading_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "associated_thermal_readings": [],
+      "image_refs": [
+        "Photo 15",
+        "Photo 16",
+        "Photo 17",
+        "Photo 18",
+        "Photo 19"
+      ],
+      "root_cause": "The same Common Bathroom tile joint gap failure causing hall dampness is migrating laterally into the bedroom wall cavity.",
+      "recommended_actions": [
+        "Priority: Fix Common Bathroom grout as this resolves both hall and bedroom issues",
+        "Apply waterproof membrane on bedroom skirting wall (negative side treatment)",
+        "Hack and re-plaster affected skirting area after waterproofing"
+      ],
+      "chain_of_thought": "Hall and bedroom both share Common Bathroom as source \u2192 single fix resolves both \u2192 confidence high due to clear spatial relationship"
+    },
+    {
+      "area_name": "Master Bedroom \u2014 Flat No. 103",
+      "flat_number": "103",
+      "negative_side_description": "Dampness and efflorescence observed both at skirting level and on the wall surface of the Master Bedroom of Flat No. 103. Efflorescence (salt deposits) indicates long-term chronic moisture exposure.",
+      "positive_side_description": "Tile joint gaps in Master Bedroom Bathroom of Flat No. 103. Possible secondary contribution from external wall crack near the bedroom.",
+      "severity": "High",
+      "severity_reasoning": "Efflorescence on wall surface (not just skirting) signals chronic long-term moisture \u2014 the problem has been present for months or more. Dual sources (bathroom + external) increase severity.",
+      "confidence_score": 0.9,
+      "evidence": [
+        {
+          "source": "inspection",
+          "description": "Dampness and efflorescence observed both at skirting level and on the wall surface of the Master Bedroom of Flat No. 103. Efflorescence (salt deposits) indicates long-term chronic moisture exposure.",
+          "confidence": 0.9,
+          "photo_refs": [
+            "Photo 20",
+            "Photo 21",
+            "Photo 22",
+            "Photo 23",
+            "Photo 24",
+            "Photo 25"
+          ],
+          "thermal_reading_ids": []
+        },
+        {
+          "source": "thermal",
+          "description": "Thermal readings show avg \u0394T=5.01\u00b0C consistent with moisture presence",
+          "confidence": 0.95,
+          "photo_refs": [],
+          "thermal_reading_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "associated_thermal_readings": [],
+      "image_refs": [
+        "Photo 20",
+        "Photo 21",
+        "Photo 22",
+        "Photo 23",
+        "Photo 24",
+        "Photo 25"
+      ],
+      "root_cause": "Primary: Master Bedroom Bathroom tile joint failure. Secondary: External wall crack near duct providing rainwater ingress. Both pathways converge in the master bedroom wall.",
+      "recommended_actions": [
+        "Immediate: Seal external wall cracks with elastomeric crack filler",
+        "Re-grout Master Bedroom Bathroom floor and wall tiles completely",
+        "Remove efflorescence chemically and apply crystalline waterproofing coat",
+        "Repaint with anti-fungal, breathable paint after drying"
+      ],
+      "chain_of_thought": "Efflorescence = chronic exposure \u2192 dual sources confirmed \u2192 higher confidence due to physical evidence of salt deposits"
+    },
+    {
+      "area_name": "Kitchen \u2014 Flat No. 103",
+      "flat_number": "103",
+      "negative_side_description": "Dampness observed at the skirting level of the Kitchen of Flat No. 103. Contained to the kitchen-bathroom shared wall area.",
+      "positive_side_description": "Tile joint gaps in Master Bedroom Bathroom of Flat No. 103. Water is migrating laterally through the shared wall between the bathroom and kitchen.",
+      "severity": "Moderate",
+      "severity_reasoning": "Kitchen dampness is secondary to the Master Bedroom Bathroom issue. It will resolve once the primary source is fixed. Limited area affected.",
+      "confidence_score": 0.8,
+      "evidence": [
+        {
+          "source": "inspection",
+          "description": "Dampness observed at the skirting level of the Kitchen of Flat No. 103. Contained to the kitchen-bathroom shared wall area.",
+          "confidence": 0.8,
+          "photo_refs": [
+            "Photo 31",
+            "Photo 32"
+          ],
+          "thermal_reading_ids": []
+        },
+        {
+          "source": "thermal",
+          "description": "Thermal readings show avg \u0394T=5.01\u00b0C consistent with moisture presence",
+          "confidence": 0.95,
+          "photo_refs": [],
+          "thermal_reading_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "associated_thermal_readings": [],
+      "image_refs": [
+        "Photo 31",
+        "Photo 32"
+      ],
+      "root_cause": "Lateral migration of water from Master Bedroom Bathroom through shared wall cavity into kitchen skirting.",
+      "recommended_actions": [
+        "Fix Master Bedroom Bathroom grout as priority \u2014 kitchen dampness will reduce",
+        "Apply waterproof skirting treatment on kitchen-bathroom shared wall",
+        "Monitor kitchen skirting for 4 weeks after primary repair"
+      ],
+      "chain_of_thought": "Limited photo evidence + secondary cause \u2192 Moderate severity. Dependent on primary fix."
+    },
+    {
+      "area_name": "External Wall \u2014 Near Master Bedroom, Flat No. 103",
+      "flat_number": "103",
+      "negative_side_description": "Damp wall surface and efflorescence on the exterior-facing Master Bedroom wall, consistent with rainwater ingress through external wall defects.",
+      "positive_side_description": "Moderate cracks observed on external wall surface near Master Bedroom duct. Gaps around duct/pipe penetrations creating direct rainwater ingress pathways.",
+      "severity": "High",
+      "severity_reasoning": "External cracks and open duct gaps create a direct path for monsoon rainwater into the building fabric. Combined with internal bathroom leakage, the wall is under attack from both sides.",
+      "confidence_score": 0.87,
+      "evidence": [
+        {
+          "source": "inspection",
+          "description": "Damp wall surface and efflorescence on the exterior-facing Master Bedroom wall, consistent with rainwater ingress through external wall defects.",
+          "confidence": 0.87,
+          "photo_refs": [
+            "Photo 42",
+            "Photo 43",
+            "Photo 44",
+            "Photo 45",
+            "Photo 46",
+            "Photo 47",
+            "Photo 48"
+          ],
+          "thermal_reading_ids": []
+        },
+        {
+          "source": "thermal",
+          "description": "Thermal readings show avg \u0394T=5.01\u00b0C consistent with moisture presence",
+          "confidence": 0.95,
+          "photo_refs": [],
+          "thermal_reading_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "associated_thermal_readings": [],
+      "image_refs": [
+        "Photo 42",
+        "Photo 43",
+        "Photo 44",
+        "Photo 45",
+        "Photo 46",
+        "Photo 47",
+        "Photo 48"
+      ],
+      "root_cause": "Moderate cracks and unsealed duct penetrations on the external wall allow rainwater ingress. This combines with internal bathroom leakage to saturate the master bedroom wall.",
+      "recommended_actions": [
+        "Seal all external wall cracks with elastomeric crack filler (PU-based)",
+        "Apply 2 coats elastomeric waterproof external paint (weather-coat)",
+        "Seal all duct/pipe penetrations with polyurethane sealant",
+        "Inspect and repair external plumbing pipe openings"
+      ],
+      "chain_of_thought": "External + internal dual attack confirmed \u2192 moderate crack = clear ingress path \u2192 HIGH severity due to year-round rainwater risk"
+    },
+    {
+      "area_name": "Parking Ceiling \u2014 Below Flat No. 103",
+      "flat_number": "103",
+      "negative_side_description": "Active leakage observed on the parking area ceiling directly below Flat No. 103. Water marks, staining and dripping visible on the RCC slab ceiling.",
+      "positive_side_description": "Concealed plumbing leakage and open tile joints in Common Bathroom of Flat No. 103 above. Water has accumulated sufficiently to penetrate the full RCC slab.",
+      "severity": "Critical",
+      "severity_reasoning": "CRITICAL \u2014 Active water penetrating a structural RCC slab is a serious structural concern. It indicates the waterproofing layer under the bathroom has completely failed. Parking areas are occupied by vehicles and people \u2014 safety risk.",
+      "confidence_score": 0.95,
+      "evidence": [
+        {
+          "source": "inspection",
+          "description": "Active leakage observed on the parking area ceiling directly below Flat No. 103. Water marks, staining and dripping visible on the RCC slab ceiling.",
+          "confidence": 0.95,
+          "photo_refs": [
+            "Photo 49",
+            "Photo 50",
+            "Photo 51",
+            "Photo 52"
+          ],
+          "thermal_reading_ids": []
+        },
+        {
+          "source": "thermal",
+          "description": "Thermal readings show avg \u0394T=5.01\u00b0C consistent with moisture presence",
+          "confidence": 0.95,
+          "photo_refs": [],
+          "thermal_reading_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "associated_thermal_readings": [],
+      "image_refs": [
+        "Photo 49",
+        "Photo 50",
+        "Photo 51",
+        "Photo 52"
+      ],
+      "root_cause": "Complete failure of the waterproofing membrane (brickbat coba layer) under the Common Bathroom of Flat No. 103. Concealed plumbing leakage adds to water load. Water has pooled sufficiently to breach the structural slab.",
+      "recommended_actions": [
+        "IMMEDIATE: Engage structural engineer to assess RCC slab integrity",
+        "IMMEDIATE: Isolate parking area below until slab integrity confirmed",
+        "Fix all plumbing joint leakages in Flat No. 103 Common Bathroom",
+        "Break and re-lay bathroom floor with new waterproof membrane (APP/SBS)",
+        "Apply epoxy injection or crystalline waterproofing on parking slab from below",
+        "Install stainless steel drip channels on parking ceiling to redirect residual water"
+      ],
+      "chain_of_thought": "Active slab leakage = water has breached structural element \u2192 highest evidence quality \u2192 CRITICAL with 0.95 confidence"
+    },
+    {
+      "area_name": "Common Bathroom Ceiling \u2014 Flat No. 103",
+      "flat_number": "103",
+      "negative_side_description": "Mild dampness observed on the ceiling of the Common Bathroom of Flat No. 103. Ceiling shows moisture staining and mild seepage marks.",
+      "positive_side_description": "Open tile joints and outlet leakage in both Common and Master Bedroom Bathrooms of Flat No. 203 (floor above). Water from Flat 203 is seeping through the floor slab into Flat 103's bathroom ceiling.",
+      "severity": "Moderate",
+      "severity_reasoning": "Moderate severity \u2014 mild dampness from above-flat source. Requires coordination between two separate flat owners. Not immediately structural but will worsen if Flat 203 is not rectified.",
+      "confidence_score": 0.78,
+      "evidence": [
+        {
+          "source": "inspection",
+          "description": "Mild dampness observed on the ceiling of the Common Bathroom of Flat No. 103. Ceiling shows moisture staining and mild seepage marks.",
+          "confidence": 0.78,
+          "photo_refs": [
+            "Photo 53",
+            "Photo 54",
+            "Photo 55",
+            "Photo 56",
+            "Photo 57",
+            "Photo 58"
+          ],
+          "thermal_reading_ids": []
+        },
+        {
+          "source": "thermal",
+          "description": "Thermal readings show avg \u0394T=5.01\u00b0C consistent with moisture presence",
+          "confidence": 0.95,
+          "photo_refs": [],
+          "thermal_reading_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "associated_thermal_readings": [],
+      "image_refs": [
+        "Photo 53",
+        "Photo 54",
+        "Photo 55",
+        "Photo 56",
+        "Photo 57",
+        "Photo 58"
+      ],
+      "root_cause": "Open tile joints and outlet leakage in bathrooms of Flat No. 203 (above) allowing water to seep through the floor slab into the ceiling of Flat No. 103.",
+      "recommended_actions": [
+        "Formally notify Flat No. 203 owner/building management of the issue",
+        "Re-grout all tile joints in Flat 203 Common and Master Bedroom Bathrooms",
+        "Repair outlet leakage in Flat 203",
+        "Apply anti-damp paint on Flat 103 Common Bathroom ceiling after repairs above are complete"
+      ],
+      "chain_of_thought": "Source is in different flat \u2192 coordination dependency \u2192 lower confidence (0.78) as access may not be available \u2192 Moderate severity"
+    }
+  ],
+  "probable_root_causes": [
+    "Systemic failure of tile grout joints in Common and Master Bedroom Bathrooms of Flat No. 103 \u2014 open joints allow water to percolate to all adjacent areas.",
+    "Damaged or degraded Nahani trap and brickbat coba waterproofing layer under bathroom tiles \u2014 original waterproofing membrane has failed.",
+    "Concealed plumbing joint leakages in bathroom pipes of Flat No. 103 \u2014 contributing to water load in walls and slab.",
+    "External wall cracks and unsealed duct penetrations near Master Bedroom \u2014 direct rainwater ingress channel.",
+    "Open tile joints and outlet leakage in Flat No. 203 (above) \u2014 causing cross-flat seepage into Flat No. 103 bathroom ceiling.",
+    "Absence of functional waterproof membrane under wet areas \u2014 indicates either original construction quality issue or age-related degradation."
+  ],
+  "severity_assessment": {
+    "overall_severity": "Critical",
+    "overall_reasoning": "Multiple interconnected dampness and leakage issues across 7 areas, with active slab leakage in the parking area indicating water has breached the RCC slab \u2014 this constitutes a Critical structural risk.",
+    "area_severities": {
+      "Hall \u2014 Flat No. 103": {
+        "level": "High",
+        "reasoning": "Skirting dampness covering the entire hall perimeter indicates widespread water ingress from the bathroom above. Efflorescence confirms prolonged exposure."
+      },
+      "Common Bedroom \u2014 Flat No. 103": {
+        "level": "High",
+        "reasoning": "Same bathroom affecting two rooms confirms large-scale waterproofing failure \u2014 not isolated to one joint."
+      },
+      "Master Bedroom \u2014 Flat No. 103": {
+        "level": "High",
+        "reasoning": "Efflorescence on wall surface (not just skirting) signals chronic long-term moisture \u2014 the problem has been present for months or more. Dual sources (bathroom + external) increase severity."
+      },
+      "Kitchen \u2014 Flat No. 103": {
+        "level": "Moderate",
+        "reasoning": "Kitchen dampness is secondary to the Master Bedroom Bathroom issue. It will resolve once the primary source is fixed. Limited area affected."
+      },
+      "External Wall \u2014 Near Master Bedroom, Flat No. 103": {
+        "level": "High",
+        "reasoning": "External cracks and open duct gaps create a direct path for monsoon rainwater into the building fabric. Combined with internal bathroom leakage, the wall is under attack from both sides."
+      },
+      "Parking Ceiling \u2014 Below Flat No. 103": {
+        "level": "Critical",
+        "reasoning": "CRITICAL \u2014 Active water penetrating a structural RCC slab is a serious structural concern. It indicates the waterproofing layer under the bathroom has completely failed. Parking areas are occupied by vehicles and people \u2014 safety risk."
+      },
+      "Common Bathroom Ceiling \u2014 Flat No. 103": {
+        "level": "Moderate",
+        "reasoning": "Moderate severity \u2014 mild dampness from above-flat source. Requires coordination between two separate flat owners. Not immediately structural but will worsen if Flat 203 is not rectified."
+      }
+    }
+  },
+  "overall_severity": "Critical",
+  "recommended_actions": [
+    "\ud83d\udd34 IMMEDIATE: Structural engineer to assess parking slab integrity \u2014 isolate area if risk confirmed",
+    "\ud83d\udd34 IMMEDIATE: Stop all water flow \u2014 fix concealed plumbing joint leakages in Common Bathroom",
+    "\ud83d\udd34 IMMEDIATE: Replace damaged Nahani trap and restore brickbat coba waterproofing layer",
+    "\ud83d\udfe0 SHORT-TERM (2 weeks): Complete re-grouting of all bathroom tiles using epoxy waterproof grout",
+    "\ud83d\udfe0 SHORT-TERM: Seal all external wall cracks with elastomeric sealant and apply weather-coat paint",
+    "\ud83d\udfe0 SHORT-TERM: Formally notify Flat No. 203 management for bathroom repairs \u2014 documented in writing",
+    "\ud83d\udfe1 MEDIUM-TERM (1\u20132 months): Apply crystalline waterproof treatment on all wet area walls (negative side)",
+    "\ud83d\udfe1 MEDIUM-TERM: Anti-dampness treatment on Hall, Bedroom, and Kitchen skirting walls",
+    "\ud83d\udfe1 MEDIUM-TERM: Remove efflorescence from Master Bedroom wall chemically and repaint",
+    "\ud83d\udfe2 LONG-TERM: Commission full building waterproofing audit for all flats on the same floor",
+    "\ud83d\udfe2 LONG-TERM: Install stainless steel drip channels in parking ceiling until permanent fix completed"
+  ],
+  "priority_actions": [
+    "\ud83d\udd34 IMMEDIATE: Structural engineer to assess parking slab integrity \u2014 isolate area if risk confirmed",
+    "\ud83d\udd34 IMMEDIATE: Stop all water flow \u2014 fix concealed plumbing joint leakages in Common Bathroom",
+    "\ud83d\udd34 IMMEDIATE: Replace damaged Nahani trap and restore brickbat coba waterproofing layer"
+  ],
+  "estimated_repair_urgency": "Immediate (within 48hrs) for parking slab; Short-term (2 weeks) for bathroom waterproofing",
+  "additional_notes": [
+    "No previous structural audit or repair work documented \u2014 this is a first inspection.",
+    "Emissivity set to 0.94 for all thermal readings (appropriate for painted plaster surfaces).",
+    "Leakage confirmed to occur at all times \u2014 not limited to monsoon season.",
+    "Leakage from Flat No. 203 (above) is affecting Flat No. 103 ceiling \u2014 cross-flat coordination required.",
+    "Concealed plumbing leakage confirmed via inspection checklist \u2014 likely contributing to all skirting dampness.",
+    "External wall shows moderate cracking near Master Bedroom duct \u2014 weather ingress pathway confirmed."
+  ],
+  "missing_or_unclear_info": [
+    "Customer Name \u2014 Not Available (field left blank in inspection form)",
+    "Property Address \u2014 Not Available (field left blank in inspection form)",
+    "Property Age (years) \u2014 Not Available (not filled in form)",
+    "Type of bathroom tiles (ceramic/vitrified/mosaic) \u2014 Not Available",
+    "Flat No. 203 contact details / formal complaint record \u2014 Not Available",
+    "Sealant condition on window frames \u2014 Not Inspected (N/A in checklist)",
+    "Photos 12\u201314 \u2014 Referenced in appendix but section context unclear"
+  ],
+  "thermal_stats": {
+    "total_readings": 30,
+    "max_hotspot": 28.8,
+    "min_hotspot": 25.1,
+    "avg_hotspot": 26.35,
+    "max_coldspot": 23.4,
+    "min_coldspot": 20.1,
+    "avg_coldspot": 21.34,
+    "max_delta": 5.4,
+    "min_delta": 5.0,
+    "avg_delta": 5.01,
+    "anomaly_count": 30,
+    "device": "GTC 400 C Professional",
+    "capture_date": "27/09/22"
+  },
+  "thermal_analysis_summary": "Thermal inspection was conducted on 27/09/22 using a GTC 400 C Professional (Serial: 02700034772). A total of 30 thermal readings were captured across the property. Surface temperatures ranged from 20.1\u00b0C (coldspot) to 28.8\u00b0C (hotspot). The average temperature differential (\u0394T) across all readings was 5.01\u00b0C, with a peak \u0394T of 5.4\u00b0C recorded at Reading #1. A total of 30 readings were flagged as anomalous based on elevated temperature differentials (\u0394T > 3\u00b0C threshold), strongly corroborating the inspection findings of active moisture ingress across the property.",
+  "thermal_anomalies": [
+    "High \u0394T=5.4\u00b0C \u2014 active moisture/leakage suspected | Surface hotspot 28.8\u00b0C \u2014 possible heat bridge",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress",
+    "Elevated \u0394T=5.0\u00b0C \u2014 monitor for moisture ingress | Surface hotspot 27.8\u00b0C \u2014 possible heat bridge"
+  ],
+  "conflicts_detected": [],
+  "charts": {
+    "thermal_profile_chart": "<base64 chart data \u2014 see HTML report>",
+    "delta_temp_chart": "<base64 chart data \u2014 see HTML report>",
+    "severity_distribution_chart": "<base64 chart data \u2014 see HTML report>",
+    "anomaly_heatmap": "<base64 chart data \u2014 see HTML report>"
+  },
+  "embedded_images": []
+}

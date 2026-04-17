@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>{{ ddr.report_title }} · {{ ddr.report_id }}</title>
+<meta name="description" content="AI-generated Detailed Diagnostic Report from property inspection and thermal imaging data"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ── Reset & tokens ───────────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A1628;
+  --bg2:#0D1E35;
+  --card:#111E30;
+  --card2:#152338;
+  --border:#1B3050;
+  --border2:#244270;
+  --accent:#0A84FF;
+  --accent2:#0066CC;
+  --text:#E8F0FC;
+  --muted:#7A9CC0;
+  --dim:#3A5A7A;
+  --critical:#FF3B30;--crit-bg:rgba(255,59,48,.08);
+  --high:#FF9500;   --high-bg:rgba(255,149,0,.08);
+  --moderate:#FFCC02;--mod-bg:rgba(255,204,2,.08);
+  --low:#34C759;    --low-bg:rgba(52,199,89,.08);
+  --na:#8E8E93;
+  --shadow:0 8px 32px rgba(0,0,0,.5);
+  --r:14px;--r-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.65}
+
+/* ── Utilities ─────────────────────────────────────────────────────── */
+.hidden{display:none}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* ── Scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ══════════════════════════════════════════════════════════════════════
+   COVER PAGE
+══════════════════════════════════════════════════════════════════════ */
+.cover{
+  background:linear-gradient(145deg,#060F1F 0%,#0A1628 40%,#0D1E35 100%);
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:space-between;
+  padding:0;
+  position:relative;overflow:hidden;
+}
+.cover::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 70% 30%,rgba(10,132,255,.06) 0%,transparent 70%),
+             radial-gradient(ellipse 50% 50% at 20% 80%,rgba(255,149,0,.04) 0%,transparent 60%);
+}
+.cover-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:48px 48px;
+  opacity:.18;
+}
+.cover-inner{position:relative;z-index:1;padding:60px 72px;flex:1;display:flex;flex-direction:column;justify-content:center}
+.cover-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--border2);border-radius:20px;
+  padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--accent);background:rgba(10,132,255,.08);
+  margin-bottom:28px;width:fit-content;
+}
+.cover-tag .live{width:7px;height:7px;background:#34C759;border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.cover-title{
+  font-size:clamp(36px,5vw,58px);font-weight:900;letter-spacing:-1.5px;
+  line-height:1.1;margin-bottom:16px;
+  background:linear-gradient(135deg,#FFFFFF 0%,#A8C4E8 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.cover-sub{font-size:18px;color:var(--muted);font-weight:400;margin-bottom:48px;line-height:1.5}
+.cover-meta-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:16px;margin-bottom:48px;
+}
+.cover-meta-item{
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:var(--r-sm);padding:14px 16px;
+}
+.cover-meta-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:5px}
+.cover-meta-value{font-size:14px;font-weight:600;color:var(--text)}
+.cover-sev-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  border-radius:12px;padding:12px 20px;font-size:16px;font-weight:800;
+  border:2px solid;margin-bottom:28px;
+}
+.cover-footer{
+  position:relative;z-index:1;
+  background:rgba(0,0,0,.3);
+  border-top:1px solid var(--border);
+  padding:20px 72px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px;
+}
+.cover-footer-brand{font-size:13px;font-weight:700;color:var(--accent)}
+.cover-footer-id{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim)}
+.cover-footer-gen{font-size:11px;color:var(--dim)}
+
+/* ── KPI Strip ──────────────────────────────────────────────────────── */
+.kpi-strip{
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(12px);
+}
+.kpi-inner{
+  max-width:1200px;margin:0 auto;padding:10px 40px;
+  display:flex;gap:0;align-items:stretch;
+  overflow-x:auto;
+}
+.kpi-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 24px;border-right:1px solid var(--border);flex-shrink:0;
+}
+.kpi-item:first-child{padding-left:0}
+.kpi-item:last-child{border-right:none}
+.kpi-icon{font-size:20px}
+.kpi-val{font-size:18px;font-weight:800;line-height:1}
+.kpi-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+
+/* ── TOC ────────────────────────────────────────────────────────────── */
+.toc{max-width:1200px;margin:48px auto 0;padding:0 40px}
+.toc-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:28px 32px}
+.toc-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:16px}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.toc-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:var(--r-sm);
+  border:1px solid var(--border);background:var(--bg2);
+  color:var(--text);text-decoration:none;font-size:13px;font-weight:500;
+  transition:.2s;
+}
+.toc-item:hover{background:var(--card2);border-color:var(--accent);color:var(--accent)}
+.toc-num{
+  width:24px;height:24px;border-radius:50%;background:var(--accent);
+  color:#fff;font-size:11px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+
+/* ── Main layout ────────────────────────────────────────────────────── */
+.main{max-width:1200px;margin:0 auto;padding:40px 40px 80px}
+
+/* ── Section card ───────────────────────────────────────────────────── */
+.section-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;margin-bottom:28px;
+  box-shadow:var(--shadow);
+}
+.section-header{
+  padding:18px 28px;
+  background:linear-gradient(90deg,rgba(10,132,255,.12) 0%,transparent 100%);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
+}
+.section-num{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--accent);color:#fff;
+  font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.section-title-text{font-size:16px;font-weight:700;color:var(--text)}
+.section-body{padding:28px}
+
+/* ── Summary box ────────────────────────────────────────────────────── */
+.summary-box{
+  background:linear-gradient(135deg,rgba(10,132,255,.06) 0%,rgba(10,132,255,.02) 100%);
+  border-left:4px solid var(--accent);border-radius:0 var(--r-sm) var(--r-sm) 0;
+  padding:20px 24px;font-size:15px;line-height:1.8;color:var(--text);
+}
+
+/* ── Confidence bar ─────────────────────────────────────────────────── */
+.conf-bar-wrap{display:flex;align-items:center;gap:10px;margin-top:8px}
+.conf-bar{height:6px;border-radius:3px;background:var(--border);flex:1;overflow:hidden}
+.conf-bar-fill{height:100%;border-radius:3px;transition:width .4s ease}
+.conf-label{font-size:11px;font-weight:700;min-width:36px;text-align:right}
+
+/* ── Area card ──────────────────────────────────────────────────────── */
+.area-card{
+  border:1px solid var(--border);border-radius:var(--r);overflow:hidden;
+  margin-bottom:20px;transition:.2s;background:var(--card2);
+}
+.area-card:hover{border-color:var(--border2);box-shadow:0 4px 24px rgba(0,0,0,.4)}
+.area-header{padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.area-name{font-size:15px;font-weight:700}
+.area-badges{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sev-pill{
+  padding:4px 12px;border-radius:16px;font-size:11px;font-weight:800;
+  letter-spacing:.4px;text-transform:uppercase;border:1px solid;
+}
+.conf-pill{
+  padding:4px 10px;border-radius:12px;font-size:10px;font-weight:700;
+  background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);
+}
+.area-body{padding:20px}
+
+/* Neg/Pos cards */
+.obs-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+@media(max-width:640px){.obs-row{grid-template-columns:1fr}}
+.obs-box{background:var(--bg2);border-radius:var(--r-sm);padding:14px;border:1px solid var(--border)}
+.obs-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.obs-label.neg{color:var(--critical)}
+.obs-label.pos{color:#34C759}
+.obs-text{font-size:13px;line-height:1.65;color:var(--muted)}
+
+/* Detail rows */
+.detail-section{border-top:1px solid var(--border);margin-top:14px;padding-top:14px}
+.detail-row{display:grid;grid-template-columns:140px 1fr;gap:6px 14px;align-items:start;margin-bottom:10px}
+.dl{font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;padding-top:2px}
+.dv{font-size:13px;color:var(--text)}
+
+/* CoT box */
+.cot-box{
+  background:rgba(10,132,255,.05);border:1px solid rgba(10,132,255,.2);
+  border-radius:var(--r-sm);padding:12px 14px;margin-top:12px;
+  font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--muted);line-height:1.8;
+}
+.cot-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--accent);margin-bottom:6px}
+
+/* Actions list */
+.action-list{list-style:none}
+.action-list li{
+  padding:7px 0 7px 22px;position:relative;font-size:13px;
+  border-bottom:1px solid var(--border);color:var(--text);
+}
+.action-list li:last-child{border-bottom:none}
+.action-list li::before{content:'→';position:absolute;left:0;color:var(--accent);font-weight:700}
+
+/* Evidence chips */
+.evidence-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.evidence-chip{
+  padding:3px 10px;border-radius:10px;font-size:10px;font-weight:600;
+  background:rgba(10,132,255,.1);border:1px solid rgba(10,132,255,.25);color:var(--accent);
+}
+.evidence-chip.thermal{background:rgba(255,59,48,.1);border-color:rgba(255,59,48,.25);color:var(--critical)}
+.evidence-chip.visual{background:rgba(52,199,89,.1);border-color:rgba(52,199,89,.25);color:#34C759}
+
+/* Image gallery */
+.img-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:14px}
+.img-thumb{border-radius:var(--r-sm);overflow:hidden;border:1px solid var(--border);aspect-ratio:4/3;background:var(--bg2);position:relative;cursor:pointer}
+.img-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:.3s}
+.img-thumb:hover img{transform:scale(1.06)}
+.img-thumb-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);font-size:9px;font-weight:700;padding:4px 8px;color:#fff;text-align:center}
+.img-missing{display:flex;align-items:center;justify-content:center;height:100%;font-size:10px;color:var(--dim);text-align:center;padding:8px}
+
+/* ── Chart section ──────────────────────────────────────────────────── */
+.chart-img{width:100%;border-radius:var(--r-sm);border:1px solid var(--border);display:block}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:800px){.chart-row{grid-template-columns:1fr}}
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:18px}
+.chart-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:12px}
+
+/* ── Thermal cards ──────────────────────────────────────────────────── */
+.thermal-stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+.thermal-stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;text-align:center}
+.thermal-stat-val{font-size:22px;font-weight:800;margin-bottom:4px}
+.thermal-stat-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+
+/* ── Priority action cards ──────────────────────────────────────────── */
+.priority-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:24px}
+.priority-card{
+  background:var(--crit-bg);border:1px solid rgba(255,59,48,.25);
+  border-left:3px solid var(--critical);border-radius:var(--r-sm);
+  padding:14px 16px;display:flex;gap:12px;align-items:flex-start;
+}
+.priority-icon{font-size:18px;flex-shrink:0;margin-top:2px}
+.priority-text{font-size:13px;font-weight:600;color:var(--text);line-height:1.5}
+
+/* ── Styled lists ───────────────────────────────────────────────────── */
+.styled-list{list-style:none}
+.styled-list li{
+  padding:9px 0 9px 26px;position:relative;font-size:13px;
+  border-bottom:1px solid var(--border);color:var(--text);line-height:1.6;
+}
+.styled-list li:last-child{border-bottom:none}
+.list-num{counter-reset:lc}
+.list-num li{counter-increment:lc}
+.list-num li::before{
+  content:counter(lc);position:absolute;left:0;
+  width:20px;height:20px;border-radius:50%;background:var(--accent);
+  color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;top:10px;
+}
+.list-check li::before{content:'✓';position:absolute;left:0;top:9px;color:#34C759;font-weight:800;font-size:14px}
+.list-dot li::before{content:'●';position:absolute;left:0;top:12px;color:var(--accent);font-size:8px}
+.list-warn li::before{content:'⚠';position:absolute;left:0;top:9px;font-size:12px}
+.list-dash li::before{content:'—';position:absolute;left:0;top:9px;color:var(--dim);font-weight:700}
+
+/* ── Conflict box ───────────────────────────────────────────────────── */
+.conflict-box{
+  background:rgba(255,204,2,.06);border:1px solid rgba(255,204,2,.3);
+  border-left:3px solid var(--moderate);border-radius:var(--r-sm);
+  padding:14px 16px;margin-bottom:12px;font-size:13px;line-height:1.65;
+}
+.conflict-tag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--moderate);margin-bottom:6px}
+
+/* ── Missing info ───────────────────────────────────────────────────── */
+.missing-row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--border);font-size:13px}
+.missing-row:last-child{border-bottom:none}
+.na-tag{
+  padding:2px 8px;border-radius:4px;font-size:10px;font-weight:800;
+  background:var(--bg2);border:1px solid var(--border);color:var(--dim);white-space:nowrap;flex-shrink:0;
+}
+
+/* ── AI metadata bar ────────────────────────────────────────────────── */
+.ai-meta-bar{
+  background:linear-gradient(90deg,rgba(10,132,255,.06) 0%,transparent 100%);
+  border:1px solid rgba(10,132,255,.15);border-radius:var(--r-sm);
+  padding:12px 20px;display:flex;gap:24px;flex-wrap:wrap;align-items:center;
+  margin-bottom:24px;
+}
+.ai-meta-item{font-size:12px;color:var(--muted)}
+.ai-meta-item strong{color:var(--text);font-weight:600}
+
+/* ── Severity heat table ────────────────────────────────────────────── */
+.sev-table{width:100%;border-collapse:collapse;margin-top:16px}
+.sev-table th{text-align:left;padding:10px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:2px solid var(--border);background:var(--bg2)}
+.sev-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:top}
+.sev-table tr:last-child td{border-bottom:none}
+.sev-table tr:hover td{background:rgba(255,255,255,.02)}
+
+/* ── Overall confidence ring ────────────────────────────────────────── */
+.confidence-ring{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.ring-svg{width:64px;height:64px;flex-shrink:0}
+.ring-label{font-size:13px;color:var(--muted);line-height:1.6}
+.ring-val{font-size:22px;font-weight:800;color:var(--text)}
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+.report-footer{
+  background:var(--bg2);border-top:1px solid var(--border);
+  padding:22px 72px;
+}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-brand{font-size:13px;font-weight:700;color:var(--accent)}
+.footer-note{font-size:11px;color:var(--dim);max-width:500px;line-height:1.6}
+.footer-id{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim)}
+
+@media print{
+  .kpi-strip{position:static}
+  .cover{min-height:auto;page-break-after:always}
+  .section-card{break-inside:avoid}
+  .area-card{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ COVER PAGE ═══════════════════ -->
+<section class="cover">
+  <div class="cover-grid"></div>
+  <div class="cover-inner">
+    <div class="cover-tag">
+      <span class="live"></span>
+      AI-Generated · DDR v{{ ddr.pipeline_version }}
+    </div>
+
+    <h1 class="cover-title">Detailed<br>Diagnostic<br>Report</h1>
+    <p class="cover-sub">Property Inspection &amp; Thermal Imaging — AI-Powered Analysis</p>
+
+    <!-- Overall severity -->
+    <div class="cover-sev-badge" style="
+      color:{{ ddr.overall_severity.value | sev_color }};
+      border-color:{{ ddr.overall_severity.value | sev_color }};
+      background:{{ ddr.overall_severity.value | sev_bg }};
+    ">
+      <span style="font-size:22px">
+        {% if ddr.overall_severity.value == 'Critical' %}🔴
+        {% elif ddr.overall_severity.value == 'High' %}🟠
+        {% elif ddr.overall_severity.value == 'Moderate' %}🟡
+        {% else %}🟢{% endif %}
+      </span>
+      Overall Severity: {{ ddr.overall_severity.value }}
+      &nbsp;·&nbsp;
+      {% if ddr.overall_confidence > 0 %}AI Confidence: {{ (ddr.overall_confidence * 100) | int }}%{% endif %}
+    </div>
+
+    <div class="cover-meta-grid">
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Report ID</div>
+        <div class="cover-meta-value mono">{{ ddr.report_id or "DDR-SAMPLE" }}</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Inspection Date</div>
+        <div class="cover-meta-value">{{ ddr.inspection_date }}</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Inspected By</div>
+        <div class="cover-meta-value">{{ ddr.inspected_by }}</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Property Type</div>
+        <div class="cover-meta-value">{{ ddr.property_type }}</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Floors</div>
+        <div class="cover-meta-value">{{ ddr.floors }}</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Areas Examined</div>
+        <div class="cover-meta-value">{{ total_areas }}</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Thermal Readings</div>
+        <div class="cover-meta-value">{% if ddr.thermal_stats %}{{ ddr.thermal_stats.total_readings }}{% else %}30{% endif %}</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Report Generated</div>
+        <div class="cover-meta-value">{{ report_generated }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-footer">
+    <div class="cover-footer-brand">🏗️ DDR AI System · Pipeline v{{ ddr.pipeline_version }}</div>
+    <div class="cover-footer-id mono">{{ ddr.report_id or "DDR-SAMPLE" }}</div>
+    <div class="cover-footer-gen">{{ report_generated }}</div>
+  </div>
+</section>
+
+<!-- ═══════════════════ KPI STRIP ═══════════════════ -->
+<div class="kpi-strip">
+  <div class="kpi-inner">
+    <div class="kpi-item">
+      <div class="kpi-icon">🏢</div><div>
+        <div class="kpi-val">{{ total_areas }}</div>
+        <div class="kpi-lbl">Areas</div>
+      </div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-icon">🌡️</div><div>
+        <div class="kpi-val">{% if ddr.thermal_stats %}{{ ddr.thermal_stats.total_readings }}{% else %}30{% endif %}</div>
+        <div class="kpi-lbl">Thermal Readings</div>
+      </div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-icon">📸</div><div>
+        <div class="kpi-val">{{ total_images }}</div>
+        <div class="kpi-lbl">Photos</div>
+      </div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-icon">⚠️</div><div>
+        <div class="kpi-val">{{ ddr.thermal_anomalies | length }}</div>
+        <div class="kpi-lbl">Anomalies</div>
+      </div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-icon">🔧</div><div>
+        <div class="kpi-val">{{ ddr.recommended_actions | length }}</div>
+        <div class="kpi-lbl">Actions</div>
+      </div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-icon">🎯</div><div>
+        <div class="kpi-val" style="color:{{ ddr.overall_severity.value | sev_color }}">{{ ddr.overall_severity.value }}</div>
+        <div class="kpi-lbl">Severity</div>
+      </div>
+    </div>
+    {% if ddr.overall_confidence > 0 %}
+    <div class="kpi-item">
+      <div class="kpi-icon">🤖</div><div>
+        <div class="kpi-val">{{ (ddr.overall_confidence * 100) | int }}%</div>
+        <div class="kpi-lbl">AI Confidence</div>
+      </div>
+    </div>
+    {% endif %}
+    <div class="kpi-item">
+      <div class="kpi-icon">⏱️</div><div>
+        <div class="kpi-val">{{ ddr.processing_time_seconds }}s</div>
+        <div class="kpi-lbl">Generated In</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ TABLE OF CONTENTS ═══════════════════ -->
+<div class="toc">
+  <div class="toc-card">
+    <div class="toc-title">📋 Contents</div>
+    <div class="toc-grid">
+      <a href="#s1" class="toc-item"><div class="toc-num">1</div>Property Issue Summary</a>
+      <a href="#s2" class="toc-item"><div class="toc-num">2</div>Area-wise Observations</a>
+      <a href="#s3" class="toc-item"><div class="toc-num">3</div>Probable Root Causes</a>
+      <a href="#s4" class="toc-item"><div class="toc-num">4</div>Severity Assessment</a>
+      <a href="#s5" class="toc-item"><div class="toc-num">5</div>Recommended Actions</a>
+      <a href="#thermal" class="toc-item"><div class="toc-num" style="background:#FF3B30">T</div>Thermal Analysis &amp; Charts</a>
+      <a href="#s6" class="toc-item"><div class="toc-num">6</div>Additional Notes</a>
+      <a href="#s7" class="toc-item"><div class="toc-num">7</div>Missing / Unclear Information</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ MAIN BODY ═══════════════════ -->
+<main class="main">
+
+  <!-- AI Metadata bar -->
+  <div class="ai-meta-bar">
+    <div class="ai-meta-item">🤖 <strong>Engine:</strong> {{ ddr.ai_model_used }}</div>
+    <div class="ai-meta-item">📦 <strong>Pipeline:</strong> v{{ ddr.pipeline_version }}</div>
+    {% if ddr.processing_time_seconds > 0 %}<div class="ai-meta-item">⏱️ <strong>Processing time:</strong> {{ ddr.processing_time_seconds }}s</div>{% endif %}
+    {% if ddr.overall_confidence > 0 %}
+    <div class="ai-meta-item">🎯 <strong>Overall confidence:</strong> {{ (ddr.overall_confidence * 100) | int }}%</div>
+    {% endif %}
+  </div>
+
+  <!-- §1 PROPERTY ISSUE SUMMARY -->
+  <div class="section-card" id="s1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title-text">Property Issue Summary</div>
+    </div>
+    <div class="section-body">
+      <div class="summary-box">{{ ddr.property_issue_summary }}</div>
+      {% if ddr.estimated_repair_urgency and ddr.estimated_repair_urgency != 'Not Available' %}
+      <div style="margin-top:16px;padding:12px 16px;background:var(--crit-bg);border:1px solid rgba(255,59,48,.2);border-radius:var(--r-sm);">
+        <span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--critical)">⏰ Repair Urgency: </span>
+        <span style="font-size:13px;font-weight:600;color:var(--text)">{{ ddr.estimated_repair_urgency }}</span>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- §2 AREA-WISE OBSERVATIONS -->
+  <div class="section-card" id="s2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title-text">Area-wise Observations</div>
+    </div>
+    <div class="section-body">
+      {% for obs in ddr.area_observations %}
+      <div class="area-card" id="area-{{ loop.index }}">
+        <div class="area-header">
+          <div class="area-name" style="color:{{ obs.severity.value | sev_color }}">
+            {{ obs.area_name }}
+          </div>
+          <div class="area-badges">
+            <div class="sev-pill" style="color:{{ obs.severity.value | sev_color }};border-color:{{ obs.severity.value | sev_color }};background:{{ obs.severity.value | sev_bg }}">
+              {{ obs.severity.value }}
+            </div>
+            {% if obs.confidence_score > 0 %}
+            <div class="conf-pill">
+              Conf: <strong style="color:{{ obs.confidence_score | conf_color }}">{{ obs.confidence_score | pct }}</strong>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="area-body">
+          <!-- Neg/Pos observation -->
+          <div class="obs-row">
+            <div class="obs-box">
+              <div class="obs-label neg">⬇ Negative Side (Affected Area)</div>
+              <div class="obs-text">{{ obs.negative_side_description }}</div>
+            </div>
+            <div class="obs-box">
+              <div class="obs-label pos">⬆ Positive Side (Source)</div>
+              <div class="obs-text">{{ obs.positive_side_description }}</div>
+            </div>
+          </div>
+
+          <!-- Confidence bar -->
+          {% if obs.confidence_score > 0 %}
+          <div class="conf-bar-wrap">
+            <div style="font-size:11px;color:var(--dim);font-weight:600;min-width:90px">Evidence Strength</div>
+            <div class="conf-bar">
+              <div class="conf-bar-fill" style="width:{{ obs.confidence_score | pct }};background:{{ obs.confidence_score | conf_color }}"></div>
+            </div>
+            <div class="conf-label" style="color:{{ obs.confidence_score | conf_color }}">{{ obs.confidence_score | pct }}</div>
+          </div>
+          {% endif %}
+
+          <!-- Evidence chips -->
+          {% if obs.evidence %}
+          <div class="evidence-chips" style="margin-top:10px">
+            {% for ev in obs.evidence %}
+            <div class="evidence-chip {{ ev.source }}">
+              {{ ev.source | upper }} evidence · {{ (ev.confidence * 100) | int }}% conf
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <!-- Detail rows -->
+          <div class="detail-section">
+            <div class="detail-row">
+              <div class="dl">Root Cause</div>
+              <div class="dv">{{ obs.root_cause }}</div>
+            </div>
+            <div class="detail-row">
+              <div class="dl">Severity Basis</div>
+              <div class="dv">{{ obs.severity_reasoning }}</div>
+            </div>
+            {% if obs.recommended_actions %}
+            <div class="detail-row">
+              <div class="dl">Actions</div>
+              <div class="dv">
+                <ul class="action-list">
+                  {% for action in obs.recommended_actions %}
+                  <li>{{ action }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+
+          <!-- Chain of thought -->
+          {% if obs.chain_of_thought %}
+          <div class="cot-box">
+            <div class="cot-label">🧠 AI Reasoning Trace</div>
+            {{ obs.chain_of_thought }}
+          </div>
+          {% endif %}
+
+          <!-- Image gallery -->
+          {% if obs.image_refs %}
+          <div style="margin-top:16px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">📸 Supporting Photographs</div>
+            <div class="img-gallery">
+              {% for ref in obs.image_refs %}
+              <div class="img-thumb">
+                {% if image_map.get(ref) %}
+                <img src="{{ image_map[ref] }}" alt="{{ ref }}" loading="lazy"/>
+                {% else %}
+                <div class="img-missing">Image Not Available<br><small>{{ ref }}</small></div>
+                {% endif %}
+                <div class="img-thumb-cap">{{ ref }}</div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- §3 ROOT CAUSES -->
+  <div class="section-card" id="s3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title-text">Probable Root Causes</div>
+    </div>
+    <div class="section-body">
+      <ul class="styled-list list-num">
+        {% for cause in ddr.probable_root_causes %}
+        <li>{{ cause }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- §4 SEVERITY ASSESSMENT -->
+  <div class="section-card" id="s4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title-text">Severity Assessment</div>
+    </div>
+    <div class="section-body">
+      <!-- Overall -->
+      <div style="padding:16px 20px;border-radius:var(--r-sm);border:1px solid {{ ddr.overall_severity.value | sev_color }};background:{{ ddr.overall_severity.value | sev_bg }};margin-bottom:20px">
+        <div style="font-size:12px;font-weight:700;color:{{ ddr.overall_severity.value | sev_color }};text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">
+          Overall Severity
+        </div>
+        <div style="font-size:22px;font-weight:900;color:{{ ddr.overall_severity.value | sev_color }};margin-bottom:8px">
+          {{ ddr.overall_severity.value }}
+        </div>
+        <div style="font-size:13px;color:var(--muted)">{{ ddr.severity_assessment.get('overall_reasoning','') }}</div>
+      </div>
+
+      <!-- Per-area severity table -->
+      <table class="sev-table">
+        <thead>
+          <tr>
+            <th>Area</th>
+            <th>Severity</th>
+            <th>Confidence</th>
+            <th>Reasoning</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for obs in ddr.area_observations %}
+          <tr>
+            <td style="font-weight:600">{{ obs.area_name }}</td>
+            <td>
+              <span class="sev-pill" style="color:{{ obs.severity.value | sev_color }};border-color:{{ obs.severity.value | sev_color }};background:{{ obs.severity.value | sev_bg }}">
+                {{ obs.severity.value }}
+              </span>
+            </td>
+            <td>
+              {% if obs.confidence_score > 0 %}
+              <div class="conf-bar-wrap" style="min-width:100px">
+                <div class="conf-bar" style="flex:1">
+                  <div class="conf-bar-fill" style="width:{{ obs.confidence_score | pct }};background:{{ obs.confidence_score | conf_color }}"></div>
+                </div>
+                <div class="conf-label" style="color:{{ obs.confidence_score | conf_color }}">{{ obs.confidence_score | pct }}</div>
+              </div>
+              {% else %}—{% endif %}
+            </td>
+            <td style="color:var(--muted)">{{ obs.severity_reasoning }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Severity distribution chart -->
+      {% if ddr.charts and ddr.charts.severity_distribution_chart %}
+      <div style="margin-top:24px;display:flex;justify-content:center">
+        <div style="max-width:380px;width:100%">
+          <div class="chart-label">Severity Distribution</div>
+          <img class="chart-img" src="data:image/png;base64,{{ ddr.charts.severity_distribution_chart }}" alt="Severity distribution chart"/>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- §5 RECOMMENDED ACTIONS -->
+  <div class="section-card" id="s5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title-text">Recommended Actions</div>
+    </div>
+    <div class="section-body">
+      {% if ddr.priority_actions %}
+      <div style="margin-bottom:8px;font-size:13px;font-weight:700;color:var(--critical);text-transform:uppercase;letter-spacing:.5px">🚨 Priority / Immediate Actions</div>
+      <div class="priority-grid" style="margin-bottom:24px">
+        {% for action in ddr.priority_actions %}
+        <div class="priority-card">
+          <div class="priority-icon">⚡</div>
+          <div class="priority-text">{{ action }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div style="margin-bottom:8px;font-size:13px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.5px">📋 Complete Action Plan</div>
+      <ul class="styled-list list-check">
+        {% for action in ddr.recommended_actions %}
+        <li>{{ action }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- THERMAL ANALYSIS -->
+  <div class="section-card" id="thermal" style="border-color:rgba(255,59,48,.3)">
+    <div class="section-header" style="background:linear-gradient(90deg,rgba(255,59,48,.1) 0%,transparent 100%)">
+      <div class="section-num" style="background:#FF3B30">🌡</div>
+      <div class="section-title-text">Thermal Imaging Analysis</div>
+    </div>
+    <div class="section-body">
+
+      <!-- Thermal stats grid -->
+      {% if ddr.thermal_stats %}
+      <div class="thermal-stats-grid">
+        <div class="thermal-stat-card">
+          <div class="thermal-stat-val" style="color:#FF3B30">{{ ddr.thermal_stats.max_hotspot }}°C</div>
+          <div class="thermal-stat-lbl">Max Hotspot</div>
+        </div>
+        <div class="thermal-stat-card">
+          <div class="thermal-stat-val" style="color:#0A84FF">{{ ddr.thermal_stats.min_coldspot }}°C</div>
+          <div class="thermal-stat-lbl">Min Coldspot</div>
+        </div>
+        <div class="thermal-stat-card">
+          <div class="thermal-stat-val" style="color:#FF9500">{{ ddr.thermal_stats.avg_delta }}°C</div>
+          <div class="thermal-stat-lbl">Avg ΔT</div>
+        </div>
+        <div class="thermal-stat-card">
+          <div class="thermal-stat-val" style="color:#FF3B30">{{ ddr.thermal_stats.max_delta }}°C</div>
+          <div class="thermal-stat-lbl">Max ΔT</div>
+        </div>
+        <div class="thermal-stat-card">
+          <div class="thermal-stat-val">{{ ddr.thermal_stats.total_readings }}</div>
+          <div class="thermal-stat-lbl">Total Readings</div>
+        </div>
+        <div class="thermal-stat-card">
+          <div class="thermal-stat-val" style="color:#FFCC02">{{ ddr.thermal_stats.anomaly_count }}</div>
+          <div class="thermal-stat-lbl">Anomalies Flagged</div>
+        </div>
+        <div class="thermal-stat-card">
+          <div class="thermal-stat-val" style="font-size:14px">{{ ddr.thermal_stats.device }}</div>
+          <div class="thermal-stat-lbl">Device</div>
+        </div>
+        <div class="thermal-stat-card">
+          <div class="thermal-stat-val" style="font-size:14px">{{ ddr.thermal_stats.capture_date }}</div>
+          <div class="thermal-stat-lbl">Capture Date</div>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="summary-box" style="margin-bottom:24px">{{ ddr.thermal_analysis_summary }}</div>
+
+      <!-- Charts -->
+      {% if ddr.charts %}
+        {% if ddr.charts.thermal_profile_chart %}
+        <div class="chart-card" style="margin-bottom:16px">
+          <div class="chart-label">🌡️ Thermal Profile — Hotspot vs Coldspot per Reading</div>
+          <img class="chart-img" src="data:image/png;base64,{{ ddr.charts.thermal_profile_chart }}" alt="Thermal profile chart"/>
+        </div>
+        {% endif %}
+        {% if ddr.charts.delta_temp_chart %}
+        <div class="chart-card" style="margin-bottom:16px">
+          <div class="chart-label">📈 Temperature Delta (ΔT) Trend — Moisture Indicator</div>
+          <img class="chart-img" src="data:image/png;base64,{{ ddr.charts.delta_temp_chart }}" alt="Delta temperature trend chart"/>
+        </div>
+        {% endif %}
+        {% if ddr.charts.anomaly_heatmap %}
+        <div class="chart-card" style="margin-bottom:16px">
+          <div class="chart-label">🎯 Observation Confidence Scores by Area</div>
+          <img class="chart-img" src="data:image/png;base64,{{ ddr.charts.anomaly_heatmap }}" alt="Confidence scores chart"/>
+        </div>
+        {% endif %}
+      {% endif %}
+
+      <!-- Anomalies -->
+      {% if ddr.thermal_anomalies %}
+      <div style="margin-top:8px">
+        <div style="font-size:13px;font-weight:700;color:var(--critical);margin-bottom:10px">⚠ Thermal Anomalies Detected</div>
+        <ul class="styled-list list-warn">
+          {% for anomaly in ddr.thermal_anomalies[:15] %}
+          <li>{{ anomaly }}</li>
+          {% endfor %}
+          {% if ddr.thermal_anomalies | length > 15 %}
+          <li style="color:var(--dim)">… and {{ ddr.thermal_anomalies | length - 15 }} more readings (see JSON export)</li>
+          {% endif %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- §6 ADDITIONAL NOTES -->
+  <div class="section-card" id="s6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-title-text">Additional Notes</div>
+    </div>
+    <div class="section-body">
+      <ul class="styled-list list-dot">
+        {% for note in ddr.additional_notes %}
+        <li>{{ note }}</li>
+        {% endfor %}
+      </ul>
+
+      {% if ddr.conflicts_detected %}
+      <div style="margin-top:24px">
+        <div style="font-size:13px;font-weight:700;color:var(--moderate);margin-bottom:12px">⚡ Data Conflicts Between Inspection &amp; Thermal Sources</div>
+        {% for conflict in ddr.conflicts_detected %}
+        <div class="conflict-box">
+          <div class="conflict-tag">Conflict Detected</div>
+          {{ conflict }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- §7 MISSING / UNCLEAR INFO -->
+  <div class="section-card" id="s7">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div class="section-title-text">Missing or Unclear Information</div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">The following information was not present in the provided documents and is explicitly flagged per DDR reporting guidelines.</p>
+      {% for item in ddr.missing_or_unclear_info %}
+      <div class="missing-row">
+        <span class="na-tag">Not Available</span>
+        <span>{{ item }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="report-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">🏗️ DDR AI System · Pipeline v{{ ddr.pipeline_version }}</div>
+    <div class="footer-note">This report was auto-generated by an AI system from inspection and thermal imaging documents. All findings are strictly based on data present in source documents — no facts have been invented. Findings should be verified by a qualified engineer before action.</div>
+    <div class="footer-id mono">{{ ddr.report_id or "DDR-SAMPLE" }} · {{ report_generated }}</div>
+  </div>
+</footer>
+
+</body>
+</html>
